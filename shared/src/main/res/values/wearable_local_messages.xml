@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="WEARABLE_LOCAL_STATUS_INTENT_NAME">WEARABLE_STATUS_INTENT</string>
+</resources>

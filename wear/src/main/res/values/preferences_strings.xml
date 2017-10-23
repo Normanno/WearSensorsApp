@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="PREFERENCES_FILE_NAME">WearSensorsApp.Preferences</string>
+    <string name="PREFERENCES_KEY_REQUIRED_SENSOR_TYPE">RAW_OR_STANDARD</string>
+    <string name="PREFERENCES_STANDARD_SENSORS_PREF_FILE_NAME">STANDARD_SENSORS</string>
+    <string name="PREFERENCES_RAW_SENSORS_PREF_FILE_NAME">RAW_SENSORS</string>
+</resources>

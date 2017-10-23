@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="DATA_SYNC_DATA_DIMENSIONALITY_SINGLE">SINGLE</string>
+    <string name="DATA_SYNC_DATA_DIMENSIONALITY_ARRAY">ARRAY</string>
+    <string name="DATA_SYNC_DATA_DIMENSIONALITY_MATRIX">MATRIX</string>
+</resources>

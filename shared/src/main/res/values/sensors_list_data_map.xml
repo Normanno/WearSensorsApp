@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="SENSOR_LIST_IDS_DATA_MAP">/wear/sensing/available_sensors_ids</string>
+    <string name="SENSOR_LIST_TYPES_DATA_MAP">/wear/sensing/available_sensors_types</string>
+    <string name="SENSOR_LIST_NAMES_DATA_MAP">/wear/sensing/available_sensors_names</string>
+    <string name="SENSOR_LIST_SELECTED_DATA_MAP">/wear/sensing/selected_sensors</string>
+</resources>

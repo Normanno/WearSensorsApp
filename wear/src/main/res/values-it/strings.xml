@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WearSensorsApp</string>
+    <string name="hello_round">CIao Tondo</string>
+    <string name="hello_square">Ciao Quadrato</string>
+</resources>

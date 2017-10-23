@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/side_nav_bar"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+
+    <TextView
+        android:id="@+id/sensing_status_tv"
+        android:layout_width="94dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/text_view_status_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1" />
+
+    <TextView
+        android:id="@+id/sensing_device_tv"
+        android:layout_width="94dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_view_device_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensing_status_tv"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/sensing_status_default_value_tv"
+        android:layout_width="293dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/sensing_status_disabled_value_tv"
+        app:layout_constraintLeft_toRightOf="@+id/sensing_status_tv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sensing_device_default_name_tv"
+        android:layout_width="293dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/sensing_device_default_name_tv"
+        app:layout_constraintLeft_toRightOf="@+id/sensing_device_tv"
+        app:layout_constraintTop_toBottomOf="@+id/sensing_status_default_value_tv" />
+
+</android.support.constraint.ConstraintLayout>

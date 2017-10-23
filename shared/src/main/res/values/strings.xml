@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Shared</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="sensor_name_accellerometer">Accellerometer</string>
+    <string name="sensor_name_gyroscope">Gyroscope</string>
+    <string name="sensor_name_ambient_temperature">Ambient Temperature</string>
+    <string name="sensor_name_gravity">Gravity</string>
+    <string name="sensor_name_light">Light</string>
+    <string name="sensor_name_linear_accelleration">Linear Accelleration</string>
+    <string name="sensor_name_magnetic_field">Magnetic Field</string>
+    <string name="sensor_name_orientation">Orientation</string>
+    <string name="sensor_name_pressure">Pressure</string>
+    <string name="sensor_name_proximity">Proximity</string>
+    <string name="sensor_name_relative_humidity">Relative Humidity</string>
+    <string name="sensor_name_rotation_vector">Rotation Vector</string>
+    <string name="sensor_name_device_temperature">Device Temperature</string>
+    <string name="wearable_sensing_active">Listening for sensors</string>
+    <string name="wearable_sensing_not_active">NOT Listening for sensors</string>
+</resources>

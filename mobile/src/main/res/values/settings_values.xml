@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="SETTING_STATIC_FRAGMENT_PATH">/settings/static_fragment</string>
+    <string name="SETTING_SENSORS_FRAGMENT_PATH">/settings/sensors_fragment</string>
+</resources>

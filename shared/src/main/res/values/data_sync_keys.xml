@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="DATA_SYNC_KEY_NUMBER_OF_SENSORS">number_of_sensors</string>
+    <string name="DATA_SYNC_KEY_SENSOR_CHARACTERISTICS_MASK">sensor_charachteristic_mask</string>
+    <string name="DATA_SYNC_SENSOR_CHARACHTERISTIC_MASK">id,type,minDelay,maxDelay,minRange,maxRange,resolution</string>
+    <string name="DATA_SYNC_KEY_TIMESTAMP">timestamp</string>
+    <string name="DATA_SYNC_KEY_SENSOR_ID">id</string>
+    <string name="DATA_SYNC_KEY_SENSOR_DATA_DIMENSIONALITY">dimensionality</string>
+    <string name="DATA_SYNC_KEY_SENSOR_DATA_TYPE">type</string>
+    <string name="DATA_SYNC_KEY_SENSOR_DATA_DIMENSIONS">dimensions</string>
+    <string name="DATA_SYNC_KEY_SENSOR_DATA_VALUES">values</string>
+    <string name="DATA_SYNC_KEY_SENSOR_DATA_SENSOR_GENDER">sensor_gender</string>
+</resources>

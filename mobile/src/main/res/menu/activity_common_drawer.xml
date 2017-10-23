@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_play_arrow"
+            android:onClick="menuHomeAction"
+            android:title="@string/action_home" />
+
+        <item
+            android:id="@+id/nav_display_data"
+            android:icon="@drawable/ic_view_headline"
+            android:onClick="menuDisplayDataAction"
+            android:title="@string/action_show_data" />
+
+        <item
+            android:id="@+id/nav_sensors"
+            android:icon="@drawable/ic_menu_manage"
+            android:onClick="menuSensorsAction"
+            android:title="@string/action_sensors" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:onClick="menuHelpAction"
+            android:title="@string/action_help" />
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info"
+            android:onClick="menuInfoAction"
+            android:title="@string/action_info" />
+    </group>
+
+    <item android:title="@string/menu_separator_send">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_sensing_frequency_key">SensingFrequency</string>
+    <string name="settings_require_raw_sensors_key">ReuireRawSensors</string>
+</resources>

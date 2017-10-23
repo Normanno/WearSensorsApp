@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="DATA_SYNC_DEFAULT_SENSOR_LIST">/wear/datasync/standard_sensor_list</string>
+    <string name="DATA_SYNC_RAW_SENSOR_LIST">/wear/datasync/raw_sensor_list</string>
+    <string name="DATA_SYNC_SENSOR_DATA">/wear/datasync/sensor_data</string>
+</resources>

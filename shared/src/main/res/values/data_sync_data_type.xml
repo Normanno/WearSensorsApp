@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="DATA_SYNC_DATA_TYPE_FLOAT">FLOAT</string>
+    <string name="DATA_SYNC_DATA_TYPE_DOUBLE">DOUBLE</string>
+    <string name="DATA_SYNC_DATA_TYPE_INT">INT</string>
+    <string name="DATA_SYNC_DATA_TYPE_LONG">LONG</string>
+    <string name="DATA_SYNC_DATA_TYPE_STRING">STRING</string>
+</resources>

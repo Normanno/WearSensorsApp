@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1a1aff</color>
+    <color name="colorPrimaryDark">#000099</color>
+    <color name="colorAccent">#1aff1a</color>
+    <color name="textOnDark">#FFFFFF</color>
+    <color name="textOnLight">#000000</color>
+    <color name="circleButtonBasic">#0000FF</color>
+    <color name="stopServiceStatus">#FF0000</color>
+    <color name="startServiceStatus">#00FF00</color>
+    <color name="stopServiceButton">#FF0000</color>
+    <color name="startServiceButton">#00FF00</color>
+    <color name="textActive">#00CC00</color>
+    <color name="textNotActive">#E60000</color>
+    <color name="textOnWhiteBgEvidence">#0000FF</color>
+</resources>

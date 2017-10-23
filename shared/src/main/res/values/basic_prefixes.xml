@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="WEAR_OPS_PREFIX">/wear</string>
+    <string name="WEAR_SENSING_OPS_PREFIX">/wear/sensing</string>
+    <string name="WEAR_DATA_SYNC_OPS_PREFIX">/wear/datasync</string>
+</resources>

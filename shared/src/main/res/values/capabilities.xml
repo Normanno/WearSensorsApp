@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="WEAR_SENSING_CAPABILITY">wear_sensing_capability</string>
+    <string name="MOBILE_COLLECTING_CAPABILITY">mobile_collecting_capability</string>
+</resources>

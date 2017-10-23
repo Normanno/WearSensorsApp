@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WearSensorsApp</string>
+    <string name="hello_round">CIao Tondo</string>
+    <string name="hello_square">Ciao Quadrato</string>
+    <string name="sensor_name_accellerometer">Accellerometro</string>
+    <string name="sensor_name_gyroscope">Giroscopio</string>
+    <string name="sensor_name_ambient_temperature">Temperatura Ambientale</string>
+    <string name="sensor_name_gravity">Gravità</string>
+    <string name="sensor_name_light">Luce</string>
+    <string name="sensor_name_linear_accelleration">Accellerazione Lineare</string>
+    <string name="sensor_name_magnetic_field">Campo Magnetico</string>
+    <string name="sensor_name_orientation">Orientamento</string>
+    <string name="sensor_name_pressure">Pressione</string>
+    <string name="sensor_name_proximity">Prossimità</string>
+    <string name="sensor_name_relative_humidity">Umidità Relativa</string>
+    <string name="sensor_name_rotation_vector">Vettore di Rotazione</string>
+    <string name="sensor_name_device_temperature">Temperatura del Dispositivo</string>
+    <string name="wearable_sensing_active">In ascolto sui sensori</string>
+    <string name="wearable_sensing_not_active">NON in ascolto sui sensori</string>
+</resources>

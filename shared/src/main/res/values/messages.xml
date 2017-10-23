@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="START_SENSING_SERVICE_STANDARD_MESSAGE">/wear/sensing/start_standard</string>
+    <string name="START_SENSING_SERVICE_RAW_MESSAGE">/wear/sensing/start_raw</string>
+    <string name="STOP_SENSING_SERVICE_MESSAGE">/wear/sensing/stop</string>
+    <string name="LIST_AVAILABLE_STANDARD_SENSORS">/wear/sensing/list_standard_sensors</string>
+    <string name="LIST_AVAILABLE_RAW_SENSORS">/wear/sensing/list_raw_sensors</string>
+</resources>

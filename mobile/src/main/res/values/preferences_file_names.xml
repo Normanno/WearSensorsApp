@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="MOBILE_PREFERENCES_STATIC_OPTIONS">preferences.xml</string>
+    <string name="MOBILE_PREFERENCES_SENSORS_LIST">pref_sensors.xml</string>
+    <string name="MOBILE_PREFERENCES_ACTUAL_WEARABLE">pref_device.xml</string>
+    <string name="MOBILE_PREFERENCES_SELECTED_SENSORS">pref_active_sensors.xml</string>
+</resources>
