@@ -55,6 +55,10 @@ public class MobileDataManager {
     private int readCounter;
     private int writeCounter;
 
+
+    /*
+    * Used to write a data tuple at a time
+    * */
     private class DataWriteHandler extends HandlerThread {
 
         Handler handler;
@@ -120,7 +124,7 @@ public class MobileDataManager {
         return instance;
     }
 
-    public void startWriteHandler(){
+    private void startWriteHandler(){
         synchronized (running) {
             Log.d(debugTag, "startWriterHandler");
             if (dataWriteHandlerThread == null || !dataWriteHandlerThread.isAlive()) {

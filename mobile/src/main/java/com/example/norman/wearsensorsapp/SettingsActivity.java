@@ -13,6 +13,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
@@ -23,6 +24,11 @@ import android.view.MenuItem;
 import com.example.norman.wearsensorsapp.sensing.DeviceSensingManager;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import static android.R.attr.key;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -40,6 +46,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+    private static final String debugTag = "WSASettingsActivity";
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -57,9 +65,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             } else if(preference instanceof EditTextPreference
                     && preference.getKey().equals(c.getString(R.string.settings_sensing_frequency_key))) {
                 preference.setSummary(stringValue+" "+c.getString(R.string.settings_sensing_frequency_hint));
-            } else
+            } else if(preference instanceof EditTextPreference
+                    && preference.getKey().equals(c.getString(R.string.settings_ros_hostname_key))) {
                 preference.setSummary(stringValue);
-
+            } else if(preference instanceof EditTextPreference
+                    && preference.getKey().equals(c.getString(R.string.settings_ros_port_key))) {
+                preference.setSummary(stringValue);
+            } else {
+                preference.setSummary(stringValue);
+            }
             return true;
         }
     };
@@ -93,7 +107,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+                        .getString(preference.getKey(),""));
     }
 
     @Override
@@ -117,6 +131,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             dsm = DeviceSensingManager.getInstance(this.getApplicationContext());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(dsm.getPreferenceChangeListener());
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     @Override
@@ -171,9 +186,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         private static final String debugTag = "PreferenceFragment";
 
-        public StaticOptionsFragment() {
-            // Required empty public constructor
-        }
+        // Required empty public constructor
+        public StaticOptionsFragment() { }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -181,12 +195,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
             setHasOptionsMenu(true);
             PreferenceScreen ps = getPreferenceScreen();
-            for(int i=0; i<ps.getPreferenceCount(); i++){
+            for(int i=0; i<ps.getPreferenceCount(); i++) {
                 Preference p = ps.getPreference(i);
-                if(p instanceof EditTextPreference)
+                if (p instanceof EditTextPreference) {
                     bindPreferenceSummaryToValue(ps.getPreference(i));
+                }
             }
 
+        }
+
+        @Override
+        public void onPause(){
+            super.onPause();
         }
 
         @Override

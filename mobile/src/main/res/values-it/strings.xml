@@ -46,4 +46,12 @@
     <string name="session_tag_current_tag_label">"Tag Corrente : "</string>
     <string name="session_tag_empty_error">Il Tag non puo essere vuoto</string>
     <string name="common_button_text_dismiss">Ok</string>
+    <string name="settings_general_group_title">Generali</string>
+    <string name="settings_ros_group_title">ROS</string>
+    <string name="settings_ros_hostname_title">ROS Indirizzo Host</string>
+    <string name="settings_ros_port_title">ROS Porta</string>
+    <string name="ros_not_sending_message">NON invio a ROS</string>
+    <string name="ros_sending_message">invio a ROS</string>
+    <string name="ros_invalid_url_error_message">ROS url non valido</string>
+    <string name="ros_empty_host_error_message">L\'Host di ROS non può essere vuoto</string>
 </resources>

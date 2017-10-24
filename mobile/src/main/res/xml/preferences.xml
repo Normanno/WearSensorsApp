@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
-        android:key="@string/settings_sensing_frequency_key"
-        android:defaultValue="1000"
-        android:title="@string/settings_sensing_frequency"
-        android:summary="@string/settings_sensing_frequency_hint"
-        android:numeric="integer"
-        />
 
-    <CheckBoxPreference
-        android:key="@string/settings_require_raw_sensors_key"
-        android:title="@string/settings_require_raw_sensors"
-        android:summary="@string/settings_require_raw_sensors_hint"
-        android:defaultValue="false" />
+    <!--
+    <PreferenceCategory
+        android:title="@string/settings_general_group_title"
+        android:key="preference_general"> -->
+        <EditTextPreference
+            android:key="@string/settings_sensing_frequency_key"
+            android:defaultValue="1000"
+            android:title="@string/settings_sensing_frequency"
+            android:summary="@string/settings_sensing_frequency_hint"
+            android:numeric="integer"
+            />
 
-  <!--
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/app_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
-    <CheckBoxPreference
-        android:key="show_background_pic"
-        android:title="Checkbox"
-        android:summary="Checkbox test"
-        android:defaultValue="true">
+        <CheckBoxPreference
+            android:key="@string/settings_require_raw_sensors_key"
+            android:title="@string/settings_require_raw_sensors"
+            android:summary="@string/settings_require_raw_sensors_hint"
+            android:defaultValue="false" />
 
-    </CheckBoxPreference>
-    -->
+        <!--
+       </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/settings_ros_group_title"
+            android:key="preference_ros"> -->
+        <EditTextPreference
+            android:key="@string/settings_ros_hostname_key"
+            android:title="@string/settings_ros_hostname_title"
+            android:summary=""
+            />
+        <EditTextPreference
+            android:key="@string/settings_ros_port_key"
+            android:title="@string/settings_ros_port_title"
+            android:numeric="integer"
+            android:summary=""
+            android:defaultValue="5092"
+            />
+    <!--
+    </PreferenceCategory>
+        -->
+
 </PreferenceScreen>

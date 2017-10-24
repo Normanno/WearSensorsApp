@@ -120,4 +120,16 @@
     <string name="session_tag_current_tag_label">Current Tag :</string>
     <string name="session_tag_empty_error">The Tag can\'t be empty!</string>
     <string name="common_button_text_dismiss">Dismiss</string>
+    <string name="settings_general_group_title">General</string>
+    <string name="settings_ros_group_title">ROS</string>
+    <string name="settings_ros_hostname_key">Hostname</string>
+    <string name="settings_ros_hostname_title">ROS Host Address</string>
+    <string name="settings_ros_port_key">Port</string>
+    <string name="settings_ros_port_title">ROS Port</string>
+    <string name="ros_not_sending_message">NOT sending to ROS</string>
+    <string name="ros_sending_message">sending to ROS</string>
+    <string name="ros_send_toggle_button_on">Start ROS</string>
+    <string name="ros_send_toggle_button_off">Stop ROS</string>
+    <string name="ros_invalid_url_error_message">ROS invalid url</string>
+    <string name="ros_empty_host_error_message">ROS Host cannot be empty</string>
 </resources>

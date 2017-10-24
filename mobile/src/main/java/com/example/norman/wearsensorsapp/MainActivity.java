@@ -1,5 +1,6 @@
 package com.example.norman.wearsensorsapp;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -20,6 +21,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.norman.wearsensorsapp.sensing.exceptions.ROSEmptyURL;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,7 +37,9 @@ public class MainActivity extends BaseActivity implements Observer {
 
 
     private ToggleButton tb;
+    private ToggleButton toggleROS;
     private TextView status;
+    private TextView textViewROS;
 
     private TextView currentTag;
     private Button sendTag;
@@ -75,6 +83,7 @@ public class MainActivity extends BaseActivity implements Observer {
 
     private void initUI(){
         this.tb = (ToggleButton) findViewById(R.id.toggleServiceButton);
+        this.toggleROS = (ToggleButton) findViewById(R.id.ROSToggleButton);
         this.status = (TextView) findViewById(R.id.status_tv);
         this.currentTag = (TextView) findViewById(R.id.session_tag_current_text_view);
         this.sendTag = (Button) findViewById(R.id.session_tag_send_button);
@@ -90,7 +99,6 @@ public class MainActivity extends BaseActivity implements Observer {
 
         } else {
             tb.setEnabled(false);
-
         }
 
         String tag = this.currentTagText +this.deviceSensingManager.getCurrentSessionTag();
@@ -132,16 +140,42 @@ public class MainActivity extends BaseActivity implements Observer {
                     startDataService();
                     sendTag.setEnabled(false);
                     editTag.setEnabled(false);
+                    toggleROS.setEnabled(false);
                 }else {
                     Log.d("[ToggleButton]", "toggle false");
                     isServiceRunning = false;
                     stopDataService();
                     sendTag.setEnabled(true);
                     editTag.setEnabled(true);
+                    toggleROS.setEnabled(true);
                 }
             }
         });
 
+        toggleROS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Log.d("[ToggleButtonROS]", "toggle true");
+                    try {
+                        rosDataSender.startSending();
+                    } catch(IOException e){
+                        Snackbar errorSnack;
+                        errorSnack = Snackbar.make(findViewById(R.id.main_coordinator_layout),R.string.ros_invalid_url_error_message,Snackbar.LENGTH_LONG);
+                        errorSnack.show();
+                        toggleROS.toggle();
+                    } catch (ROSEmptyURL ee){
+                        Snackbar errorSnack;
+                        errorSnack = Snackbar.make(findViewById(R.id.main_coordinator_layout),R.string.ros_empty_host_error_message,Snackbar.LENGTH_LONG);
+                        errorSnack.show();
+                        toggleROS.toggle();
+                    }
+                }else {
+                    Log.d("[ToggleButtonROS]", "toggle false");
+                    rosDataSender.stopSending();
+                }
+            }
+        });
     }
 
     private void startDataService(){
@@ -168,20 +202,29 @@ public class MainActivity extends BaseActivity implements Observer {
 
 
     public void checkPermissions(){
-        boolean write_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        boolean read_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        Boolean write_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        Boolean read_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        Boolean internet_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
         String[] permissions;
-        if( write_permission && read_permission) {
+        List<String> permissions_list = new LinkedList<String>();
+        if( write_permission && read_permission && internet_permission) {
             this.deviceSensingManager.enablePublicSave();
             return;
         }
-        if( !read_permission && !write_permission)
-            permissions = new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                        android.Manifest.permission.READ_EXTERNAL_STORAGE};
-        else if(read_permission)
-            permissions = new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        else
-            permissions = new String[] {android.Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        if(!read_permission)
+            permissions_list.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (!write_permission)
+            permissions_list.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (!internet_permission)
+            permissions_list.add(android.Manifest.permission.INTERNET);
+
+        permissions = new String[permissions_list.size()];
+        for(int i = 0; i< permissions_list.size(); i++)
+            permissions[i] = permissions_list.get(i);
+
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
     }
 

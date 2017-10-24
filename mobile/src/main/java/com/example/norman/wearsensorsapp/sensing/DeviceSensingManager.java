@@ -62,6 +62,10 @@ public class DeviceSensingManager extends Observable {
     private SensorGender listedSensorGender = SensorGender.STANDARD;
     private boolean rawSensors;
 
+    private boolean sendToRos;
+    private String ros_hostname = "";
+    private int ros_port;
+
     private static DeviceSensingManager instance;
 
     private  Map<String, String> device;  //key=device_spec, value=device_spec_value
@@ -73,19 +77,25 @@ public class DeviceSensingManager extends Observable {
     private String fileName = "WearSensorsApp";
     private String filesPath = "WearSensorsApp";
     private String dataFilesDir = "data";
-    private String sessionTag = "WSA";
+    private String sessionTag = "WSA_ROS";
     private final SimpleDateFormat todayFormatter = new SimpleDateFormat("yyyy_MM_dd");
 
     private final SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                rawSensors = sharedPreferences.getBoolean(appContext.getString(R.string.settings_require_raw_sensors_key), false);
-                if( rawSensors )
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.equals(appContext.getString(R.string.settings_require_raw_sensors_key)) ) {
+                rawSensors = sharedPreferences.getBoolean(key, false);
+                if (rawSensors)
                     listedSensorGender = SensorGender.RAW;
                 else
                     listedSensorGender = SensorGender.STANDARD;
                 updateSensors();
                 updateObservers();
+            } else if(key.equals(appContext.getString(R.string.settings_ros_port_key))) {
+                ros_port = Integer.parseInt(sharedPreferences.getString(key, "5092"));
+            } else if(key.equals(appContext.getString(R.string.settings_ros_hostname_key))) {
+                ros_hostname = sharedPreferences.getString(key,"");
+            }
         }
     };
 
@@ -97,7 +107,7 @@ public class DeviceSensingManager extends Observable {
         }
     };
 
-    private final CapabilityApi.CapabilityListener capabilityListener = new CapabilityApi.CapabilityListener() {
+/*    private final CapabilityApi.CapabilityListener capabilityListener = new CapabilityApi.CapabilityListener() {
         @Override
         public void onCapabilityChanged(CapabilityInfo capabilityInfo) {
             Log.d(debugTag, "onCapabilityChanged");
@@ -105,9 +115,9 @@ public class DeviceSensingManager extends Observable {
             for(Node n : capabilityInfo.getNodes())
                 Log.d(debugTag, "node: "+n.getDisplayName());
                 */
-        }
+/*        }
     };
-
+*/
     private final GoogleApiClient.ConnectionCallbacks connectedListener = new GoogleApiClient.ConnectionCallbacks() {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
@@ -144,6 +154,7 @@ public class DeviceSensingManager extends Observable {
         //TODO SET FILE AND DIRECTORY PREFERENCES
         this.folderAndFileSettings();
         this.readDevicePrefs();
+        this.readRosPrefs();
         this.readSensorsSetting();
         this.updateSensors();
     }
@@ -230,6 +241,10 @@ public class DeviceSensingManager extends Observable {
         return bestNode != null && bestNode.isNearby();
     }
 
+    public Boolean sendToROS(){
+        return this.sendToRos;
+    }
+
     public SensorGender getListingSensorGender(){
         SensorGender s;
         synchronized (updating){
@@ -289,6 +304,16 @@ public class DeviceSensingManager extends Observable {
         }
         return s;
     }
+
+    /*GET ROS BASIC INFO*/
+    public String getRosHostname(){
+        return this.ros_hostname;
+    }
+
+    public int getRosPort(){
+        return this.ros_port;
+    }
+
     /*END Get basic info*/
     /*Messaging*/
 
@@ -536,6 +561,13 @@ public class DeviceSensingManager extends Observable {
         Log.d(debugTag,"updateObservers");
         this.setChanged();
         this.notifyObservers();
+    }
+
+    private void readRosPrefs(){
+        Context c1 = this.appContext;
+        SharedPreferences rosPref = PreferenceManager.getDefaultSharedPreferences(c1);
+        this.ros_port = Integer.parseInt(rosPref.getString(appContext.getString(R.string.settings_ros_port_key), "0"));
+        this.ros_hostname = rosPref.getString(appContext.getString(R.string.settings_ros_hostname_key), "");
     }
 
     private void readDevicePrefs(){
