@@ -23,7 +23,8 @@ public enum SensorType {
     PROXIMITY(Sensor.TYPE_PROXIMITY, R.string.sensor_name_proximity, false),
     RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, R.string.sensor_name_relative_humidity, false),
     ROTATION_VECTOR(Sensor.TYPE_ROTATION_VECTOR, R.string.sensor_name_rotation_vector, false),
-    DEVICE_TEMPERATURE(Sensor.TYPE_TEMPERATURE, R.string.sensor_name_device_temperature, true);
+    DEVICE_TEMPERATURE(Sensor.TYPE_TEMPERATURE, R.string.sensor_name_device_temperature, true),
+    HEART_RATE(Sensor.TYPE_HEART_RATE, R.string.sensor_name_heart_rate, false);
 
     private int class_id;
     private int name;

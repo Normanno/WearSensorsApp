@@ -14,7 +14,7 @@
     <string name="sensor_name_proximity">Proximity</string>
     <string name="sensor_name_relative_humidity">Relative Humidity</string>
     <string name="sensor_name_rotation_vector">Rotation Vector</string>
-    <string name="sensor_name_device_temperature">Device Temperature</string>
+    <string name="sensor_name_heart_rate">Heart Rate</string>
     <string name="wearable_sensing_active">Listening for sensors</string>
     <string name="wearable_sensing_not_active">NOT Listening for sensors</string>
 </resources>

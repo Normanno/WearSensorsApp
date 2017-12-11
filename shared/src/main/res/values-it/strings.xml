@@ -18,4 +18,5 @@
     <string name="sensor_name_device_temperature">Temperatura del Dispositivo</string>
     <string name="wearable_sensing_active">In ascolto sui sensori</string>
     <string name="wearable_sensing_not_active">NON in ascolto sui sensori</string>
+    <string name="sensor_name_heart_rate">Frequenza Cardiaca</string>
 </resources>

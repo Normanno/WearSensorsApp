@@ -35,6 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class WearableSensingManager extends WearableListenerService
         implements SensorEventListener , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, CapabilityApi.CapabilityListener{
@@ -57,6 +60,10 @@ public class WearableSensingManager extends WearableListenerService
     private SensorGender requiredSensorGender; //Holds the listening sensors type
     private Map<Sensor, Integer> required_senorId; //holds the listening sensors and ids
 
+    private Integer hrMeasurementDuration = 10;
+    private Integer hrMeasurementDelay = 5;
+    private TimeUnit hrTimeUnit = TimeUnit.SECONDS;
+    private ScheduledExecutorService hrScheduler;
 
 
     private Boolean rawValues;
@@ -372,12 +379,34 @@ public class WearableSensingManager extends WearableListenerService
     }
 
 
+    private void initHrListening(final Sensor hrSensor){
+        final SensorEventListener listener = this;
+        hrScheduler = Executors.newScheduledThreadPool(1);
+        hrScheduler.scheduleAtFixedRate(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Boolean registered = sm.registerListener(listener, hrSensor, SensorManager.SENSOR_DELAY_NORMAL);
+                        try {
+                            Thread.sleep(hrMeasurementDuration * 1000);
+                        } catch (InterruptedException e) {
+                            Log.e(debugTag, "Interrupted while waitting to unregister Heartrate Sensor");
+                        }
+                        sm.unregisterListener(listener, hrSensor);
+                    }
+                }, 3, hrMeasurementDuration + hrMeasurementDelay, hrTimeUnit);
+    }
+
     private void startSensorsListening(){
         this.listenForSensors = true;
         for(SensorType key : SensorType.values()){
             Sensor s = this.sm.getDefaultSensor(key.getId());
-            if( s != null)
+            Log.d(debugTag, "Attaching sensor to "+key.getId()+" - "+key.getName(this.getApplicationContext()));
+            Log.d(debugTag, s==null ? "--SENSOR NOT FOUND":"++SENSOR FOUND");
+            if( s != null && key.getId() != Sensor.TYPE_HEART_RATE)
                 sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+            else if( s != null && key.getId() == Sensor.TYPE_HEART_RATE)
+                this.initHrListening(s);
         }
         this.updateActivity(this.getApplicationContext().getString(R.string.wearable_sensing_active));
     }
@@ -386,6 +415,11 @@ public class WearableSensingManager extends WearableListenerService
         Log.d(debugTag, "StopSensorsListening");
         this.sm.unregisterListener(this);
         this.listenForSensors = false;
+        if( hrScheduler != null && !hrScheduler.isTerminated()) {
+            hrScheduler.shutdown();
+            hrScheduler = null;
+        }
+
         this.updateActivity(this.getApplicationContext().getString(R.string.wearable_sensing_not_active));
     }
 

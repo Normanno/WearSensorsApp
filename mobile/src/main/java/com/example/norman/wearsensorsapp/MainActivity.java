@@ -1,5 +1,6 @@
 package com.example.norman.wearsensorsapp;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -170,18 +173,29 @@ public class MainActivity extends BaseActivity implements Observer {
     public void checkPermissions(){
         boolean write_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         boolean read_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        Boolean body_sensors_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED ;
+
         String[] permissions;
-        if( write_permission && read_permission) {
+        List<String> permissions_list = new LinkedList<String>();
+        if( write_permission && read_permission && body_sensors_permission) {
             this.deviceSensingManager.enablePublicSave();
             return;
         }
-        if( !read_permission && !write_permission)
-            permissions = new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                        android.Manifest.permission.READ_EXTERNAL_STORAGE};
-        else if(read_permission)
-            permissions = new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        else
-            permissions = new String[] {android.Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        if(!read_permission)
+            permissions_list.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (!write_permission)
+            permissions_list.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+        if(!body_sensors_permission)
+            permissions_list.add(Manifest.permission.BODY_SENSORS);
+
+        permissions = new String[permissions_list.size()];
+        for(int i = 0; i< permissions_list.size(); i++)
+            permissions[i] = permissions_list.get(i);
+
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
     }
 
