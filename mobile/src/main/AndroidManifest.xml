@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.norman.wearsensorsapp">
+    package="com.example.norman.ROSWSA">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,11 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".BaseActivity"
+            android:name="com.example.norman.ROSWSA.BaseActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.norman.ROSWSA.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,52 +30,52 @@
         </activity>
 
         <activity
-            android:name=".SensorsActivity"
+            android:name="com.example.norman.ROSWSA.SensorsActivity"
             android:label="@string/title_activity_sensors"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.example.norman.ROSWSA.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.norman.wearsensorsapp.MainActivity" />
+                android:value="com.example.norman.ROSWSA.MainActivity" />
         </activity>
 
         <activity
-            android:name=".AboutActivity"
+            android:name="com.example.norman.ROSWSA.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.example.norman.ROSWSA.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.norman.wearsensorsapp.MainActivity" />
+                android:value="com.example.norman.ROSWSA.MainActivity" />
         </activity>
         <activity
-            android:name=".DisplayDataActivity"
+            android:name="com.example.norman.ROSWSA.DisplayDataActivity"
             android:label="@string/title_activity_display_data"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.example.norman.ROSWSA.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.norman.wearsensorsapp.MainActivity" />
+                android:value="com.example.norman.ROSWSA.MainActivity" />
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name="com.example.norman.ROSWSA.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.example.norman.ROSWSA.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.norman.wearsensorsapp.MainActivity" />
+                android:value="com.example.norman.ROSWSA.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.norman.ROSWSA.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.example.norman.ROSWSA.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.norman.wearsensorsapp.MainActivity" />
+                android:value="com.example.norman.ROSWSA.MainActivity" />
         </activity>
 
-        <service android:name=".CollectDataService">
+        <service android:name="com.example.norman.ROSWSA.CollectDataService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
 
@@ -95,7 +95,7 @@
         </service>
 
         <service
-            android:name=".WearableSettingService">
+            android:name="com.example.norman.ROSWSA.WearableSettingService">
         </service>
 
     </application>

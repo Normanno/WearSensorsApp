@@ -3,7 +3,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.example.norman.wearsensorsapp.SettingsActivity$StaticOptionsFragment"
+        android:fragment="com.example.norman.ROSWSA.SettingsActivity$StaticOptionsFragment"
         android:title="@string/generic_settings"
         />
 

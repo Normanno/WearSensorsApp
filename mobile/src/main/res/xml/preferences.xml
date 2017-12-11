@@ -37,6 +37,11 @@
             android:summary=""
             android:defaultValue="5092"
             />
+        <EditTextPreference
+            android:key="@string/settings_ros_path_key"
+            android:title="@string/settings_ros_path_title"
+            android:summary=""
+            />
     <!--
     </PreferenceCategory>
         -->

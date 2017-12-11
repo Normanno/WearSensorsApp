@@ -18,4 +18,6 @@
     <string name="wearable_sensing_active">Listening for sensors</string>
     <string name="wearable_sensing_not_active">NOT Listening for sensors</string>
     <string name="sensor_name_heart_rate">Heart Rate</string>
+    <string name="REQUEST_PERMISSION_BODY_DENIED_MSG">This way you\'ll not get all the information</string>
+    <string name="REQUEST_PERMISSION_BODY_GRANTED_MSG">Permission Granted</string>
 </resources>

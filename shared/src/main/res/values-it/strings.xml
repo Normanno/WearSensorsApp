@@ -19,4 +19,6 @@
     <string name="wearable_sensing_active">In ascolto sui sensori</string>
     <string name="wearable_sensing_not_active">NON in ascolto sui sensori</string>
     <string name="sensor_name_heart_rate">Heart Rate</string>
+    <string name="REQUEST_PERMISSION_BODY_DENIED_MSG">In questo modo non avrai tutte le informazioni</string>
+    <string name="REQUEST_PERMISSION_BODY_GRANTED_MSG">Permesso Accordato</string>
 </resources>

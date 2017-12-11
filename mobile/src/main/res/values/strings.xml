@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WearSensorsApp</string>
+    <string name="app_name">WSA_ROS</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -132,4 +132,6 @@
     <string name="ros_send_toggle_button_off">Stop ROS</string>
     <string name="ros_invalid_url_error_message">ROS invalid url</string>
     <string name="ros_empty_host_error_message">ROS Host cannot be empty</string>
+    <string name="settings_ros_path_key">Path</string>
+    <string name="settings_ros_path_title">ROS path on Host</string>
 </resources>

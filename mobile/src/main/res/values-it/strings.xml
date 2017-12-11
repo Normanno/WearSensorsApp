@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WearSensorsApp</string>
+    <string name="app_name">WSA_ROS</string>
     <string name="about_author_label">Autore</string>
     <string name="about_author_name">Vincenzo Norman Vitale</string>
     <string name="about_email_label">Email</string>
@@ -54,4 +54,5 @@
     <string name="ros_sending_message">invio a ROS</string>
     <string name="ros_invalid_url_error_message">ROS url non valido</string>
     <string name="ros_empty_host_error_message">L\'Host di ROS non può essere vuoto</string>
+    <string name="settings_ros_path_title">Path sull\'Host ROS</string>
 </resources>
