@@ -232,13 +232,14 @@ public class DeviceSensingManager extends Observable {
 
     public SensorGender getListingSensorGender(){
         SensorGender s;
+        Log.d(debugTag, "getListingSensorGender");
         synchronized (updating){
             if(this.listedSensorGender.equals(SensorGender.RAW))
                 s=SensorGender.RAW;
             else
                 s = SensorGender.STANDARD;
         }
-
+        Log.d(debugTag, "getListingSensorGender end");
         return s;
     }
 
@@ -407,9 +408,10 @@ public class DeviceSensingManager extends Observable {
 
     private void sendSensorRequestMessage(){
         String msg = this.appContext.getString(R.string.LIST_AVAILABLE_STANDARD_SENSORS);
+        Log.d(debugTag, "messaggio di controllo 1");
         if( this.getListingSensorGender().equals(SensorGender.RAW) )
             msg = this.appContext.getString(R.string.LIST_AVAILABLE_RAW_SENSORS);
-
+        Log.d(debugTag, "messaggio di controllo 2");
         if(bestNode != null && bestNode.isNearby()) {
             final String finalMsg = msg;
             Wearable.MessageApi.sendMessage(this.mGoogleApiClient,
@@ -428,6 +430,7 @@ public class DeviceSensingManager extends Observable {
                                 }
                             }
                     );
+            Log.d(debugTag, "messaggio di controllo 3");
         }
         else
             Log.d(debugTag, "NULL BEST NODE");
@@ -436,15 +439,19 @@ public class DeviceSensingManager extends Observable {
     /*Syncronize sensorsMap data with the smartwatch*/
     private void requestWearableSensors(){
 
+        Log.d(debugTag, "requestWearableSensors");
         if( bestNode == null || !bestNode.isNearby() )
             this.findAndSend(new ResultCallback() {
                 @Override
                 public void onResult(@NonNull Result result) {
+                    Log.d(debugTag, "findandsend callback");
                     sendSensorRequestMessage();
                 }
             });
         else
             this.sendSensorRequestMessage();
+
+
     }
 
     /*End Messaging*/
@@ -452,6 +459,7 @@ public class DeviceSensingManager extends Observable {
     /*DataSync*/
 
     private void startWearSettingsService(){
+        Log.d(debugTag, "StartWearSettingService");
         Intent intent = new Intent(this.appContext, WearableSettingService.class);
         appContext.startService(intent);
     }
@@ -504,7 +512,7 @@ public class DeviceSensingManager extends Observable {
      */
     public Map<Integer, SensorItem> getListingSensors(SensorGender gender){
         if( !gender.equals(getListeningSensorsGender()) || this.sensors.isEmpty() ){
-            Log.d(debugTag, "getListingSensors");
+            Log.d(debugTag, "getListingSensors "+gender.toString());
             synchronized (updating) {
                 this.updateSensors();
 

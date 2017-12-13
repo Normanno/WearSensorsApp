@@ -69,6 +69,12 @@ public class SensorsActivity extends BaseActivity implements Observer{
         this.deviceSensingManager.addObserver(this);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        this.updateItemsList();
+    }
+
     public void saveSensorsSpecs(){
         Snackbar sensorSnack;
         MobileDataManager mdm = MobileDataManager.getInstance(this.getApplicationContext());
@@ -136,14 +142,16 @@ public class SensorsActivity extends BaseActivity implements Observer{
 
     private void updateSensorsList(){
         SensorGender sensorGender = this.deviceSensingManager.getListingSensorGender();
+        Log.d(debugTag, "updatesensorslist 1");
         Map<Integer, DeviceSensingManager.SensorItem> sensors = this.deviceSensingManager.getListingSensors(sensorGender);
-
+        Log.d(debugTag, "updatesensorslist 2");
         if(this.sensorItems == null)
             this.sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
         else
             this.sensorItems.clear();
-        Log.d("DeviceSensingManager", "sensors activity: "+sensors);
+        Log.d("DeviceSensingManager", "sensors activity: "+sensors.toString());
         this.sensorItems.addAll(sensors.values());
+        Log.d(debugTag, "updatesensorslist 1");
     }
 
     @Override

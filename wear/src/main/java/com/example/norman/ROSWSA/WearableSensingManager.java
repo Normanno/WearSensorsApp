@@ -67,7 +67,7 @@ public class WearableSensingManager extends WearableListenerService
     private SensorGender requiredSensorGender; //Holds the listening sensors type
     private Map<Sensor, Integer> required_senorId; //holds the listening sensors and ids
 
-    private Integer hrMeasurementDuration = 10;
+    private Integer hrMeasurementDuration = 1;
     private Integer hrMeasurementDelay = 5;
     private TimeUnit hrTimeUnit = TimeUnit.SECONDS;
     private ScheduledExecutorService hrScheduler;

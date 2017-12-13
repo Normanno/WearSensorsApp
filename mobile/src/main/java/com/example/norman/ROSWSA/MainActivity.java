@@ -263,6 +263,7 @@ public class MainActivity extends BaseActivity implements Observer {
         Boolean read_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         Boolean internet_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
         Boolean body_sensors_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED ;
+
         String[] permissions;
         List<String> permissions_list = new LinkedList<String>();
         if( write_permission && read_permission && internet_permission) {
