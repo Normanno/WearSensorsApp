@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity implements Observer {
     @Override
     public void onPause(){
         super.onPause();
+        this.deviceSensingManager.deleteObserver(this);
     }
 
     private void initUI(){

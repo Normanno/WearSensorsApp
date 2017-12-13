@@ -1,5 +1,7 @@
 package com.example.norman.wearsensorsapp;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
@@ -14,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.norman.shared.SensorType;
 import com.example.norman.shared.SensorGender;
 import com.example.norman.wearsensorsapp.adapters.SensorCustomAdapter;
 import com.example.norman.wearsensorsapp.sensing.DeviceSensingManager;
@@ -75,7 +76,7 @@ public class SensorsActivity extends BaseActivity implements Observer{
     public void onStart(){
         super.onStart();
         Log.d(debugTag, "onStart1");
-        this.updateItemsList();
+        //this.updateItemsList();
         Log.d(debugTag, "onStart2");
     }
 
@@ -96,7 +97,9 @@ public class SensorsActivity extends BaseActivity implements Observer{
     public void onResume(){
         super.onResume();
         this.deviceSensingManager.addObserver(this);
+        Log.d("DeviceSensingManager", "onResume1");
         this.deviceSensingManager.checkForNodes();
+        sensorsAdapter.notifyDataSetChanged();
         this.updateItemsList();
         Log.d(debugTag, "onResume");
     }
@@ -104,12 +107,11 @@ public class SensorsActivity extends BaseActivity implements Observer{
     private void updateItemsList(){
         sensorsAdapter.clear();
         this.updateSensorsList();
-        sensorsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    public void onPause(){
+        super.onPause();
         this.deviceSensingManager.deleteObserver(this);
     }
 
@@ -146,14 +148,29 @@ public class SensorsActivity extends BaseActivity implements Observer{
     }
 
     private void updateSensorsList(){
-        SensorGender sensorGender = this.deviceSensingManager.getListingSensorGender();
-        Map<Integer, DeviceSensingManager.SensorItem> sensors = this.deviceSensingManager.getListingSensors(sensorGender);
+        final Activity act = this;
+        AsyncTask updater = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                SensorGender sensorGender = deviceSensingManager.getListingSensorGender();
+                Map<Integer, DeviceSensingManager.SensorItem> sensors = deviceSensingManager.getListingSensors(sensorGender);
 
-        if(this.sensorItems == null)
-            this.sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
-        else
-            this.sensorItems.clear();
-        this.sensorItems.addAll(sensors.values());
+                if(sensorItems == null)
+                    sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
+                else
+                    sensorItems.clear();
+                sensorItems.addAll(sensors.values());
+                Log.d(debugTag, "sendors "+ sensors.size());
+                act.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sensorsAdapter.notifyDataSetChanged();
+                    }
+                });
+                return null;
+            }
+        };
+        updater.execute();
     }
 
     @Override
