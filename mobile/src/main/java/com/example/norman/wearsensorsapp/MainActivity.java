@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity implements Observer {
         super.onResume();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             this.checkPermissions();
+
         this.deviceSensingManager.addObserver(this);
         this.deviceSensingManager.checkForNodes();
         this.deviceSensingManager.updateSensors();
@@ -173,11 +174,11 @@ public class MainActivity extends BaseActivity implements Observer {
     public void checkPermissions(){
         boolean write_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         boolean read_permission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        Boolean body_sensors_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED ;
+        boolean body_sensors_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED ;
 
         String[] permissions;
         List<String> permissions_list = new LinkedList<String>();
-        if( write_permission && read_permission && body_sensors_permission) {
+        if( write_permission && read_permission) {
             this.deviceSensingManager.enablePublicSave();
             return;
         }
@@ -201,7 +202,7 @@ public class MainActivity extends BaseActivity implements Observer {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
-        Log.d("MainActivityMobile", "onPermissionResult");
+        Log.d(debugTag, "onPermissionResult");
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -223,15 +224,15 @@ public class MainActivity extends BaseActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        Log.d("DeviceSensingManager", "MainActivityUpdate");
+        Log.d(debugTag, "MainActivityUpdate");
         if( this.deviceSensingManager.isWearableConnected() ){
             this.tb.setEnabled(true);
             Log.d(debugTag," wearable is connected");
-            Log.d("DeviceSensingManager", "MainActivityUpdate enables");
+            Log.d(debugTag, "MainActivityUpdate enables");
         } else {
             this.tb.setEnabled(false);
             this.stopDataService();
-            Log.d("DeviceSensingManager", "MainActivityUpdate disables");
+            Log.d(debugTag, "MainActivityUpdate disables");
             Log.d(debugTag," wearable is not connected");
         }
 

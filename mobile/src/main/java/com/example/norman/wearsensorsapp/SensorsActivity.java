@@ -68,6 +68,15 @@ public class SensorsActivity extends BaseActivity implements Observer{
         this.sensorsAdapter = new SensorCustomAdapter(this.getApplicationContext(), this.sensorItems);
         this.sensorsListView.setAdapter(sensorsAdapter);
         this.deviceSensingManager.addObserver(this);
+        Log.d(debugTag, "onCreate");
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(debugTag, "onStart1");
+        this.updateItemsList();
+        Log.d(debugTag, "onStart2");
     }
 
     public void saveSensorsSpecs(){
@@ -89,6 +98,7 @@ public class SensorsActivity extends BaseActivity implements Observer{
         this.deviceSensingManager.addObserver(this);
         this.deviceSensingManager.checkForNodes();
         this.updateItemsList();
+        Log.d(debugTag, "onResume");
     }
 
     private void updateItemsList(){
@@ -143,23 +153,15 @@ public class SensorsActivity extends BaseActivity implements Observer{
             this.sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
         else
             this.sensorItems.clear();
-        Log.d("DeviceSensingManager", "sensors activity: "+sensors);
         this.sensorItems.addAll(sensors.values());
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        Log.d(debugTag, "update method");
-        Log.d("DeviceSensingManager", "SettingsActivityUpdate");
         if(this.deviceSensingManager.isWearableConnected()) {
-
             this.saveButton.setEnabled(true);
-            Log.d("DeviceSensingManager", "SettingsActivityUpdate enables");
-            Log.d(debugTag," wearable is connected");
         } else {
             this.saveButton.setEnabled(false);
-            Log.d(debugTag," wearable is not connected");
-            Log.d("DeviceSensingManager", "SettingsActivityUpdate disables");
         }
         this.updateItemsList();
     }

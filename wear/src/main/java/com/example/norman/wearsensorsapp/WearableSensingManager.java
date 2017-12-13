@@ -1,8 +1,10 @@
 package com.example.norman.wearsensorsapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -40,7 +42,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class WearableSensingManager extends WearableListenerService
-        implements SensorEventListener , GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, CapabilityApi.CapabilityListener{
+        implements SensorEventListener , GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, CapabilityApi.CapabilityListener{
 
     private WearableDataSender ds;
     private GoogleApiClient mGoogleApiClient;
@@ -76,7 +79,9 @@ public class WearableSensingManager extends WearableListenerService
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.d(debugTag, "MessageReceiver created");
+
+        if( !this.checkGrantedPermissions() )
+            this.requirePermissions();
 
         this.mGoogleApiClient = new GoogleApiClient
                 .Builder(this.getApplicationContext())
@@ -110,6 +115,21 @@ public class WearableSensingManager extends WearableListenerService
         if( required_senorId == null)
             required_senorId = new HashMap<>();
         this.readPreferences();
+    }
+
+    /***
+     * Check if all required dangerous permissions are granted
+     *
+     * @return - true if granted
+     *         - false otherwise
+     */
+    private boolean checkGrantedPermissions(){
+        return this.checkSelfPermission(Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requirePermissions(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void readPreferences(){
@@ -176,17 +196,9 @@ public class WearableSensingManager extends WearableListenerService
 
     }
 
-    @Override
-    public void onDataChanged(DataEventBuffer dataEvents){
-        Log.d(debugTag, "onDataChanged "+dataEvents);
-        for (DataEvent de : dataEvents){
-            Log.d(debugTag, "event "+de.getDataItem().getUri());
-        }
-    }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent){
-        Log.d(debugTag, messageEvent.getSourceNodeId());
         if( messageEvent.getPath().equals(
                 this.getString(R.string.START_SENSING_SERVICE_STANDARD_MESSAGE)
             ) ){
@@ -329,7 +341,6 @@ public class WearableSensingManager extends WearableListenerService
         String requestPath = this.getString(R.string.DATA_SYNC_DEFAULT_SENSOR_LIST);
         if( type.equals(SensorGender.RAW) )
             requestPath = this.getString(R.string.DATA_SYNC_RAW_SENSOR_LIST);
-        Log.d(debugTag, sensorsNames.toString());
         PutDataMapRequest pdmr = PutDataMapRequest.create(requestPath);
         pdmr.getDataMap().putIntegerArrayList(this.getString(R.string.SENSOR_LIST_IDS_DATA_MAP), sensorsIds);
         pdmr.getDataMap().putStringArrayList(this.getString(R.string.SENSOR_LIST_NAMES_DATA_MAP), sensorsNames);
@@ -337,7 +348,6 @@ public class WearableSensingManager extends WearableListenerService
         pdmr.getDataMap().putInt(this.getString(R.string.DATA_SYNC_KEY_SENSOR_DATA_SENSOR_GENDER), type.getId());
         pdmr.getDataMap().putLong(this.getString(R.string.DATA_SYNC_KEY_TIMESTAMP), System.currentTimeMillis());// used to force the onDataChanged event
         pdmr.setUrgent();
-        Log.d(debugTag,"sensor types"+ sensorsTypes.toString());
         PutDataRequest pdr = pdmr.asPutDataRequest();
         pdr.setUrgent();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(mGoogleApiClient, pdr);
@@ -401,8 +411,6 @@ public class WearableSensingManager extends WearableListenerService
         this.listenForSensors = true;
         for(SensorType key : SensorType.values()){
             Sensor s = this.sm.getDefaultSensor(key.getId());
-            Log.d(debugTag, "Attaching sensor to "+key.getId()+" - "+key.getName(this.getApplicationContext()));
-            Log.d(debugTag, s==null ? "--SENSOR NOT FOUND":"++SENSOR FOUND");
             if( s != null && key.getId() != Sensor.TYPE_HEART_RATE)
                 sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
             else if( s != null && key.getId() == Sensor.TYPE_HEART_RATE)

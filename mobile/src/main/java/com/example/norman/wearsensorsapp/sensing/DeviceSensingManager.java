@@ -101,10 +101,6 @@ public class DeviceSensingManager extends Observable {
         @Override
         public void onCapabilityChanged(CapabilityInfo capabilityInfo) {
             Log.d(debugTag, "onCapabilityChanged");
-            /*
-            for(Node n : capabilityInfo.getNodes())
-                Log.d(debugTag, "node: "+n.getDisplayName());
-                */
         }
     };
 
@@ -168,6 +164,7 @@ public class DeviceSensingManager extends Observable {
     }
 
     public void checkForNodes(){
+        Log.d(debugTag, "checkForNodes");
         Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override
             public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
@@ -179,6 +176,7 @@ public class DeviceSensingManager extends Observable {
     }
 
     private void findAndSend(ResultCallback res_c){
+        Log.d(debugTag, "findAndSend");
         final ResultCallback rc = res_c;
         Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override
@@ -226,7 +224,6 @@ public class DeviceSensingManager extends Observable {
     /*END Setter*/
     /*Get basic info*/
     public Boolean isWearableConnected(){
-        Log.d(debugTag, ""+(bestNode != null)+"-"+(bestNode != null? bestNode.isNearby(): "not nearby" ));
         return bestNode != null && bestNode.isNearby();
     }
 
@@ -526,7 +523,6 @@ public class DeviceSensingManager extends Observable {
                 Log.d(debugTag, "updateSensors iswearableconnected");
                 this.startWearSettingsService();
                 this.requestWearableSensors();
-
             }
         }
 
