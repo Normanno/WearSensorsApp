@@ -164,7 +164,6 @@ public class DeviceSensingManager extends Observable {
     }
 
     public void checkForNodes(){
-        Log.d(debugTag, "checkForNodes");
         Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override
             public void onResult(NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
@@ -176,7 +175,6 @@ public class DeviceSensingManager extends Observable {
     }
 
     private void findAndSend(ResultCallback res_c){
-        Log.d(debugTag, "findAndSend");
         final ResultCallback rc = res_c;
         Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override
@@ -450,15 +448,11 @@ public class DeviceSensingManager extends Observable {
      * @param gender
      */
     public void updateSensorsList(Map<Integer, SensorItem> map, SensorGender gender){
-        Log.d(debugTag,"Updating available sensorsMap");
-
         synchronized (updating) {
             listedSensorGender = gender;
             sensors.clear();
             for(Integer key: map.keySet())
                 sensors.put(key, map.get(key));
-
-            Log.d(debugTag, "Available sensors : "+sensors);
             updating.notifyAll();
         }
         this.saveWearableSettings();
@@ -487,7 +481,6 @@ public class DeviceSensingManager extends Observable {
      */
     public Map<Integer, SensorItem> getListingSensors(SensorGender gender){
         if( !gender.equals(getListeningSensorsGender()) || this.sensors.isEmpty() ){
-            Log.d(debugTag, "getListingSensors");
             synchronized (updating) {
                 this.updateSensors();
 
@@ -517,10 +510,8 @@ public class DeviceSensingManager extends Observable {
      * This method force the DeviceSensingManager to update the sensors list
      * */
     public void updateSensors(){
-        Log.d(debugTag, "updateSensors called");
         synchronized (updating) {
             if(this.isWearableConnected()) {
-                Log.d(debugTag, "updateSensors iswearableconnected");
                 this.startWearSettingsService();
                 this.requestWearableSensors();
             }
@@ -529,7 +520,6 @@ public class DeviceSensingManager extends Observable {
     }
 
     private void updateObservers(){
-        Log.d(debugTag,"updateObservers");
         this.setChanged();
         this.notifyObservers();
     }

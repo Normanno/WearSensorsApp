@@ -68,16 +68,6 @@ public class SensorsActivity extends BaseActivity implements Observer{
         this.sensorsListView = (ListView) findViewById(R.id.sensors_list_view);
         this.sensorsAdapter = new SensorCustomAdapter(this.getApplicationContext(), this.sensorItems);
         this.sensorsListView.setAdapter(sensorsAdapter);
-        this.deviceSensingManager.addObserver(this);
-        Log.d(debugTag, "onCreate");
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(debugTag, "onStart1");
-        //this.updateItemsList();
-        Log.d(debugTag, "onStart2");
     }
 
     public void saveSensorsSpecs(){
@@ -92,16 +82,13 @@ public class SensorsActivity extends BaseActivity implements Observer{
         sensorSnack.show();
     }
 
-
     @Override
     public void onResume(){
         super.onResume();
         this.deviceSensingManager.addObserver(this);
-        Log.d("DeviceSensingManager", "onResume1");
         this.deviceSensingManager.checkForNodes();
         sensorsAdapter.notifyDataSetChanged();
         this.updateItemsList();
-        Log.d(debugTag, "onResume");
     }
 
     private void updateItemsList(){
@@ -160,7 +147,6 @@ public class SensorsActivity extends BaseActivity implements Observer{
                 else
                     sensorItems.clear();
                 sensorItems.addAll(sensors.values());
-                Log.d(debugTag, "sendors "+ sensors.size());
                 act.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -170,6 +156,7 @@ public class SensorsActivity extends BaseActivity implements Observer{
                 return null;
             }
         };
+        //The update operations are performd in a async-task to avoid application freeze
         updater.execute();
     }
 
