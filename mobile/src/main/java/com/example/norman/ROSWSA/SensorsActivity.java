@@ -1,5 +1,7 @@
 package com.example.norman.ROSWSA;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
@@ -66,13 +68,6 @@ public class SensorsActivity extends BaseActivity implements Observer{
         this.sensorsListView = (ListView) findViewById(R.id.sensors_list_view);
         this.sensorsAdapter = new SensorCustomAdapter(this.getApplicationContext(), this.sensorItems);
         this.sensorsListView.setAdapter(sensorsAdapter);
-        this.deviceSensingManager.addObserver(this);
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        this.updateItemsList();
     }
 
     public void saveSensorsSpecs(){
@@ -103,8 +98,8 @@ public class SensorsActivity extends BaseActivity implements Observer{
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    public void onPause(){
+        super.onPause();
         this.deviceSensingManager.deleteObserver(this);
     }
 
@@ -141,32 +136,37 @@ public class SensorsActivity extends BaseActivity implements Observer{
     }
 
     private void updateSensorsList(){
-        SensorGender sensorGender = this.deviceSensingManager.getListingSensorGender();
-        Log.d(debugTag, "updatesensorslist 1");
-        Map<Integer, DeviceSensingManager.SensorItem> sensors = this.deviceSensingManager.getListingSensors(sensorGender);
-        Log.d(debugTag, "updatesensorslist 2");
-        if(this.sensorItems == null)
-            this.sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
-        else
-            this.sensorItems.clear();
-        Log.d("DeviceSensingManager", "sensors activity: "+sensors.toString());
-        this.sensorItems.addAll(sensors.values());
-        Log.d(debugTag, "updatesensorslist 1");
+        final Activity act = this;
+        AsyncTask updater = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                SensorGender sensorGender = deviceSensingManager.getListingSensorGender();
+                Map<Integer, DeviceSensingManager.SensorItem> sensors = deviceSensingManager.getListingSensors(sensorGender);
+
+                if(sensorItems == null)
+                    sensorItems = new ArrayList<DeviceSensingManager.SensorItem>();
+                else
+                    sensorItems.clear();
+                sensorItems.addAll(sensors.values());
+                act.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sensorsAdapter.notifyDataSetChanged();
+                    }
+                });
+                return null;
+            }
+        };
+        //The update operations are performd in a async-task to avoid application freeze
+        updater.execute();
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        Log.d(debugTag, "update method");
-        Log.d("DeviceSensingManager", "SettingsActivityUpdate");
         if(this.deviceSensingManager.isWearableConnected()) {
-
             this.saveButton.setEnabled(true);
-            Log.d("DeviceSensingManager", "SettingsActivityUpdate enables");
-            Log.d(debugTag," wearable is connected");
         } else {
             this.saveButton.setEnabled(false);
-            Log.d(debugTag," wearable is not connected");
-            Log.d("DeviceSensingManager", "SettingsActivityUpdate disables");
         }
         this.updateItemsList();
     }

@@ -305,7 +305,6 @@ public class MainActivity extends BaseActivity implements Observer {
 
                     this.deviceSensingManager.disablePublicSave();
                 }
-                return;
             }
 
         }
@@ -314,15 +313,12 @@ public class MainActivity extends BaseActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        Log.d("DeviceSensingManager", "MainActivityUpdate");
         if( this.deviceSensingManager.isWearableConnected() ){
             this.tb.setEnabled(true);
             Log.d(debugTag," wearable is connected");
-            Log.d("DeviceSensingManager", "MainActivityUpdate enables");
         } else {
             this.tb.setEnabled(false);
             this.stopDataService();
-            Log.d("DeviceSensingManager", "MainActivityUpdate disables");
             Log.d(debugTag," wearable is not connected");
         }
 
