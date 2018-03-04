@@ -34,6 +34,7 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import java.lang.Math;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,16 +67,20 @@ public class WearableSensingManager extends WearableListenerService
 
     private SensorGender requiredSensorGender; //Holds the listening sensors type
     private Map<Sensor, Integer> required_senorId; //holds the listening sensors and ids
+    private Map<SensorType, Boolean> listen_to_sensor; //keep trace of witch sensor need to be listened
 
-    private Integer hrMeasurementDuration = 1;
-    private Integer hrMeasurementDelay = 5;
-    private TimeUnit hrTimeUnit = TimeUnit.SECONDS;
+    private Integer hrMeasurementDuration = 900;
+    private Integer hrInitialDelay = 100;
+    private Integer hrMeasurementDelay = 100;
+    private TimeUnit hrTimeUnit = TimeUnit.MILLISECONDS;
     private ScheduledExecutorService hrScheduler;
 
     private Boolean rawValues;
     private Boolean listenForSensors;
 
     private String mobileNodeId;
+
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void onCreate(){
@@ -116,6 +121,18 @@ public class WearableSensingManager extends WearableListenerService
             sensor_sensorId = new HashMap<Sensor, Integer>();
         if( required_senorId == null)
             required_senorId = new HashMap<>();
+
+        if( listen_to_sensor == null ){
+            listen_to_sensor = new HashMap<SensorType, Boolean>();
+            for(SensorType key : SensorType.values()){
+                if(key == SensorType.ACCELLEROMETER || key == SensorType.GYROSCOPE || key == SensorType.HEART_RATE) {
+                    listen_to_sensor.put(key, Boolean.TRUE);
+                    Log.d("TOLISTEN", " Listening on : " + key.getName(this.getBaseContext()));
+                }else
+                    listen_to_sensor.put(key, Boolean.FALSE);
+            }
+        }
+
         this.readPreferences();
     }
 
@@ -200,7 +217,7 @@ public class WearableSensingManager extends WearableListenerService
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents){
-        Log.d(debugTag, "onDataChanged "+dataEvents);
+        //Log.d(debugTag, "onDataChanged "+dataEvents);
         for (DataEvent de : dataEvents){
             Log.d(debugTag, "event "+de.getDataItem().getUri());
         }
@@ -383,34 +400,40 @@ public class WearableSensingManager extends WearableListenerService
     }
 
     private void initHrListening(final Sensor hrSensor){
+        sm.registerListener(this,hrSensor, SensorManager.SENSOR_DELAY_FASTEST);
+       /*
         final SensorEventListener listener = this;
         hrScheduler = Executors.newScheduledThreadPool(1);
         hrScheduler.scheduleAtFixedRate(
                 new Runnable() {
                     @Override
                     public void run() {
-                        Boolean registered = sm.registerListener(listener, hrSensor, SensorManager.SENSOR_DELAY_NORMAL);
+                        Boolean registered = sm.registerListener(listener, hrSensor, SensorManager.SENSOR_DELAY_FASTEST);
                         try {
-                            Thread.sleep(hrMeasurementDuration * 1000);
+                            Thread.sleep(hrMeasurementDuration * 5);
                         } catch (InterruptedException e) {
                             Log.e(debugTag, "Interrupted while waitting to unregister Heartrate Sensor");
                         }
                         sm.unregisterListener(listener, hrSensor);
+                        Log.d(debugTag,"Hr sending");
                     }
-                }, 3, hrMeasurementDuration + hrMeasurementDelay, hrTimeUnit);
+                }, hrInitialDelay, hrMeasurementDelay, hrTimeUnit);
+    */
     }
 
     private void startSensorsListening(){
         this.listenForSensors = true;
 
         for(SensorType key : SensorType.values()){
-            Sensor s = this.sm.getDefaultSensor(key.getId());
-            Log.d(debugTag, "Attaching sensor to "+key.getId()+" - "+key.getName(this.getApplicationContext()));
-            Log.d(debugTag, s==null ? "--SENSOR NOT FOUND":"++SENSOR FOUND");
-            if( s != null && key.getId() != Sensor.TYPE_HEART_RATE)
-                sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-            else if( s != null && key.getId() == Sensor.TYPE_HEART_RATE)
-                this.initHrListening(s);
+            if( listen_to_sensor.get(key) ) {
+                Sensor s = this.sm.getDefaultSensor(key.getId());
+                Log.d(debugTag, "Attaching sensor to " + key.getId() + " - " + key.getName(this.getApplicationContext()));
+                Log.d(debugTag, s == null ? "--SENSOR NOT FOUND" : "++SENSOR FOUND");
+                if (s != null && key.getId() != Sensor.TYPE_HEART_RATE)
+                    sm.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+                else if (s != null && key.getId() == Sensor.TYPE_HEART_RATE)
+                    this.initHrListening(s);
+            }
         }
         this.updateActivity(this.getApplicationContext().getString(R.string.wearable_sensing_active));
     }
@@ -464,7 +487,7 @@ public class WearableSensingManager extends WearableListenerService
             sensorEvent.values[1] = ( sensorEvent.values[1] - gravity[1] ) / 9.81f;
             sensorEvent.values[2] = ( sensorEvent.values[2] - gravity[2] ) / 9.81f;
 
-        } else if( sensorEvent.sensor.getType() == SensorType.GYROSCOPE.getId()){
+        } else if( sensorEvent.sensor.getType() == SensorType.GYROSCOPE.getId() ){
             // from radians/second to degree/second
             sensorEvent.values[0] = sensorEvent.values[0] * (180 / ((float) Math.PI));
             sensorEvent.values[1] = sensorEvent.values[1] * (180 / ((float) Math.PI));
